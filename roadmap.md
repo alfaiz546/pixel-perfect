@@ -1,0 +1,11 @@
+# KamConnect roadmap
+- [x] Branding, homepage, navigation, footer
+- [x] Find workers (filters), skill passport with QR + trust score
+- [x] Find jobs + post job, individual & team hiring, dashboard request tracking
+- [x] Leaderboard, feedback with reference number
+- [x] Sign up / log in (worker or hirer), Google, email verification, forgot/reset password
+- [x] Profile picture upload, worker profile editing
+- [ ] Branded 6-digit code emails (needs email domain from user)
+- [ ] Voice-based profile creation
+- [ ] Ratings & reviews after completed jobs, verified work history, moderation
+- [ ] Portfolio images
