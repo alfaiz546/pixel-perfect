@@ -63,7 +63,7 @@ function AuthPage() {
   async function onSignup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const parsed = signupSchema.safeParse(Object.fromEntries(new FormData(e.currentTarget)));
-    if (!parsed.success) return toast.error(parsed.error.issues[0].message);
+    if (!parsed.success) { toast.error(parsed.error.issues[0]?.message ?? "Invalid input"); return; }
     const { email, password, full_name, phone, account_type } = parsed.data;
     setBusy(true);
     const { error } = await supabase.auth.signUp({
@@ -71,7 +71,7 @@ function AuthPage() {
       options: { emailRedirectTo: `${window.location.origin}/dashboard`, data: { full_name, phone, account_type } },
     });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     setVerifyEmail(email);
     setCooldown(60);
   }
@@ -84,7 +84,7 @@ function AuthPage() {
     setBusy(false);
     if (error) {
       if (error.message.toLowerCase().includes("confirm")) { setVerifyEmail(String(fd.get("email"))); return toast.error("Please verify your email first."); }
-      return toast.error("Incorrect email or password.");
+      { toast.error("Incorrect email or password."); return; }
     }
     toast.success("Welcome back!");
   }
@@ -94,14 +94,14 @@ function AuthPage() {
     setBusy(true);
     const { error } = await supabase.auth.verifyOtp({ email: verifyEmail, token: code, type: "signup" });
     setBusy(false);
-    if (error) return toast.error("That code is invalid or has expired.");
+    if (error) { toast.error("That code is invalid or has expired."); return; }
     toast.success("Email verified!");
   }
 
   async function resend() {
     if (!verifyEmail || cooldown > 0) return;
     const { error } = await supabase.auth.resend({ type: "signup", email: verifyEmail, options: { emailRedirectTo: `${window.location.origin}/dashboard` } });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     setCooldown(60);
     toast.success("A new email is on its way.");
   }
@@ -109,7 +109,7 @@ function AuthPage() {
   async function onForgot(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const email = String(new FormData(e.currentTarget).get("email"));
-    if (!z.string().email().safeParse(email).success) return toast.error("Enter a valid email");
+    if (!z.string().email().safeParse(email).success) { toast.error("Enter a valid email"); return; }
     setBusy(true);
     await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${window.location.origin}/reset-password` });
     setBusy(false);

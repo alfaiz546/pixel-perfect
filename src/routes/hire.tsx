@@ -47,18 +47,18 @@ function HirePage() {
     if (!user) return;
     const fd = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
     const parsed = base.safeParse(fd);
-    if (!parsed.success) return toast.error(parsed.error.issues[0].message);
+    if (!parsed.success) { toast.error(parsed.error.issues[0]?.message ?? "Invalid input"); return; }
     setBusy(true);
     const { error } = await supabase.from("hire_requests").insert({
       ...parsed.data,
       preferred_date: parsed.data.preferred_date || null,
       hirer_id: user.id,
       kind: tab,
-      worker_id: tab === "individual" && fd.worker_id ? fd.worker_id : null,
+      worker_id: tab === "individual" && fd["worker_id"] ? fd["worker_id"] : null,
       roles: tab === "team" ? roles : [],
     });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Request sent! Track it in your dashboard.");
     navigate({ to: "/dashboard" });
   }

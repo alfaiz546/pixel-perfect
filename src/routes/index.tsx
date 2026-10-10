@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { BadgeCheck, ShieldCheck, Users, Search, Hammer, Paintbrush, Wrench, Zap, Scissors, Brick, Sparkles, Car, HardHat, Cpu, Mail, Phone } from "lucide-react";
+import { BadgeCheck, ShieldCheck, Users, Search, Hammer, Paintbrush, Wrench, Zap, Scissors, BrickWall as Brick, Sparkles, Car, HardHat, Cpu, Mail, Phone } from "lucide-react";
 import hero from "@/assets/hero.jpg.asset.json";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -136,7 +136,7 @@ function Home() {
               ["Can I hire a whole team?", "Yes — use Team hiring to request several professions and headcounts for one project."],
               ["How is the trust score calculated?", "Average rating (35%), repeat customers (25%), on-time completion (20%), verified job volume (10%) and account consistency (10%)."],
             ].map(([q, a]) => (
-              <AccordionItem key={q} value={q}><AccordionTrigger>{q}</AccordionTrigger><AccordionContent>{a}</AccordionContent></AccordionItem>
+              <AccordionItem key={q} value={q ?? ""}><AccordionTrigger>{q}</AccordionTrigger><AccordionContent>{a}</AccordionContent></AccordionItem>
             ))}
           </Accordion>
         </div>
