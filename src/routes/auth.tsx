@@ -83,7 +83,7 @@ function AuthPage() {
     const { error } = await supabase.auth.signInWithPassword({ email: String(fd.get("email")), password: String(fd.get("password")) });
     setBusy(false);
     if (error) {
-      if (error.message.toLowerCase().includes("confirm")) { setVerifyEmail(String(fd.get("email"))); return toast.error("Please verify your email first."); }
+      if (error.message.toLowerCase().includes("confirm")) { setVerifyEmail(String(fd.get("email"))); toast.error("Please verify your email first."); return; }
       { toast.error("Incorrect email or password."); return; }
     }
     toast.success("Welcome back!");
