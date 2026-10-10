@@ -43,11 +43,11 @@ function JobsPage() {
     if (!user) return;
     const form = e.currentTarget;
     const parsed = schema.safeParse(Object.fromEntries(new FormData(form)));
-    if (!parsed.success) return toast.error(parsed.error.issues[0].message);
+    if (!parsed.success) { toast.error(parsed.error.issues[0]?.message ?? "Invalid input"); return; }
     setBusy(true);
     const { error } = await supabase.from("jobs").insert({ ...parsed.data, posted_by: user.id });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Job posted!");
     form.reset();
     qc.invalidateQueries({ queryKey: ["jobs"] });

@@ -33,12 +33,12 @@ function ResetPage() {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     const password = String(fd.get("password"));
-    if (password.length < 8) return toast.error("Password must be at least 8 characters");
-    if (password !== fd.get("confirm")) return toast.error("Passwords do not match");
+    if (password.length < 8) { toast.error("Password must be at least 8 characters"); return; }
+    if (password !== fd.get("confirm")) { toast.error("Passwords do not match"); return; }
     setBusy(true);
     const { error } = await supabase.auth.updateUser({ password });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await supabase.auth.signOut({ scope: "others" });
     toast.success("Password updated!");
     navigate({ to: "/dashboard" });

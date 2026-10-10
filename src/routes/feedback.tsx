@@ -38,14 +38,14 @@ function FeedbackPage() {
     e.preventDefault();
     if (busy) return;
     const parsed = schema.safeParse(Object.fromEntries(new FormData(e.currentTarget)));
-    if (!parsed.success) return toast.error(parsed.error.issues[0].message);
+    if (!parsed.success) { toast.error(parsed.error.issues[0]?.message ?? "Invalid input"); return; }
     setBusy(true);
     const ref = crypto.randomUUID().slice(0, 8).toUpperCase();
     const { error } = await supabase.from("feedback").insert({
       ...parsed.data, email: parsed.data.email || null, rating: rating || null, user_id: user?.id ?? null, ref,
     });
     setBusy(false);
-    if (error) return toast.error("Could not send feedback. Please try again.");
+    if (error) { toast.error("Could not send feedback. Please try again."); return; }
     setDone(ref);
   }
 
